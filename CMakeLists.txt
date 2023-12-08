@@ -9,9 +9,21 @@ project(sylar)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 include (cmake/utils.cmake)
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "Choose the build type (Debug or Release)" FORCE)
+endif()
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    message(STATUS "Debug build.")
+    set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -g -fPIC -std=c++11 -Wall -Wno-deprecated -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
+    set(CMAKE_C_FLAGS "$ENV{CXXFLAGS} -rdynamic -g -fPIC -std=c11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
+else()
+    message(STATUS "Release build.")
+    set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -O3 -fPIC -std=c++11 -Wall -Wno-deprecated -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
+    set(CMAKE_C_FLAGS "$ENV{CXXFLAGS} -rdynamic -O3 -fPIC -std=c11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
+endif()
+
 set(CMAKE_VERBOSE_MAKEFILE ON)
-set(CMAKE_CXX_FLAGS "$ENV{CXXFLAGS} -rdynamic -O3 -fPIC -ggdb -std=c++11 -Wall -Wno-deprecated -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
-set(CMAKE_C_FLAGS "$ENV{CXXFLAGS} -rdynamic -O3 -fPIC -ggdb -std=c11 -Wall -Wno-deprecated -Werror -Wno-unused-function -Wno-builtin-macro-redefined -Wno-deprecated-declarations")
 
 include_directories(.)
 include_directories(/apps/sylar/include)
@@ -23,7 +35,7 @@ include_directories(/apps/sylar/include)
 link_directories(/apps/sylar/lib)
 link_directories(/apps/sylar/lib64)
 
-option(BUILD_TEST "ON for complile test" OFF)
+option(BUILD_TEST "ON for complile test" ON)
 
 find_package(Boost REQUIRED)
 if(Boost_FOUND)

@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "cppdbg",
+        "request": "launch",
+        "name": "Launch Program",
+        "cwd": "${fileDirname}",
+        "args": ["-s"],
+        "program": "${workspaceFolder}/bin/sylar",
+        "miDebuggerPath": "${workspaceFolder}/gdb.sh"
+      }
+    ]
+  }
